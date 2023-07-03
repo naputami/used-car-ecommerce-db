@@ -5,11 +5,12 @@ from psycopg2 import Error
 #connect to postgreSQL database
 try:
     connection = psycopg2.connect(
-        user="postgres",
-        password="GaNbarou23",
-        host="localhost",
-        port="5432",
-        database="finalproject_pacmann"
+        #change the value according to your pgAdmin settings
+        user="user",
+        password="password",
+        host="host",
+        port="port",
+        database="database"
     )
 
     cursor = connection.cursor()
@@ -66,7 +67,7 @@ def insert_ads_dummy(filename):
             description = row[8]
             post_date = row[9]
 
-            insert_query = f"INSERT INTO ads (user_id, car_id, title, color, mileage_km, transmission, negotiable, description, post_date) VALUES ('{user_id}', '{car_id}', '{title}', '{color}', '{mileage}', '{transmisiion}', '{negotiable}', '{description}', '{post_date}');"
+            insert_query = f"INSERT INTO ads (user_id, car_id, title, color, mileage, transmission, negotiable, description, post_date) VALUES ('{user_id}', '{car_id}', '{title}', '{color}', '{mileage}', '{transmisiion}', '{negotiable}', '{description}', '{post_date}');"
 
             cursor.execute(insert_query)
 
@@ -98,7 +99,6 @@ def insert_bids_dummy(filename):
 
     connection.commit()
 
-# insert_user_dummy("user.csv")
-# insert_ads_dummy("ads.csv")
-
+insert_user_dummy("user.csv")
+insert_ads_dummy("ads.csv")
 insert_bids_dummy("bids.csv")

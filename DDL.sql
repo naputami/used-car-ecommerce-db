@@ -28,7 +28,7 @@ CREATE TABLE ads (
 	description TEXT,
 	title VARCHAR(50) NOT NULL,
 	color VARCHAR(10),
-	mileage_km INT,
+	mileage INT,
 	transmission VARCHAR(10),
 	negotiable BOOLEAN NOT NULL,
 	post_date TIMESTAMP(0) NOT NULL	
