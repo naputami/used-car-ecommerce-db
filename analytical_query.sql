@@ -1,22 +1,9 @@
 --rank by bid
---should we include count product?
 SELECT c.model AS model, COUNT(DISTINCT ad_id) AS count_product, COUNT(bid_id) AS count_bid
 FROM ads a
 LEFT JOIN cars c
 USING (car_id)
 LEFT JOIN bids b
-USING (ad_id)
-GROUP BY model
-ORDER BY count_bid DESC;
-
---without count product
-SELECT 
-	c.model AS model, 
-	COUNT(bid_id) AS count_bid
-FROM ads a
-INNER JOIN cars c
-USING (car_id)
-INNER JOIN bids b
 USING (ad_id)
 GROUP BY model
 ORDER BY count_bid DESC;

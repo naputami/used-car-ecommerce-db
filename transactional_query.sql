@@ -29,9 +29,7 @@ USING(user_id)
 WHERE u.name = 'Ajimin Prasetya'
 ORDER BY a.post_date DESC;
 
-SELECT * from users;
-
---search cheapest car by keyword. i.e "Yaris"
+--search for cheapest car by keyword. i.e "Yaris"
 SELECT 
 	car_id, 
 	brand, 
