@@ -10,8 +10,8 @@ WHERE year >= '2015'
 ORDER BY year;
 
 --insert one bid entry
-INSERT INTO bids (user_id, ad_id, bid_price, bid_date, bid_status) 
-VALUES (30, 10, 150000000, current_timestamp, 'Sent');
+INSERT INTO bids (user_id, ad_id, bid_price, bid_date) 
+VALUES (30, 10, 150000000, current_timestamp);
 
 --view all cars from one user with name Ajimin Prasetya and order the result from most recent posted car                                                                                                                
 SELECT 

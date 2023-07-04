@@ -8,7 +8,7 @@ PostgreSQL Database implementation for A Used Car E-commerce data management.
 4. The advertisements include information such as brand, car model, car body type, transmission system, model year, color, and mileage of the car being offered.
 5. Users can search for offered cars based on seller location, car brand, and car body type.
 6. Users can bid for their desired cars if the price is negotiable.
-7. Transactions are conducted outside the application.
+7. Car purchasing transactions are conducted outside the application.
 
 ## Database Purpose
 The primary objective of this system is to:
@@ -34,7 +34,7 @@ This database consists of following tables.
 ```sql
 CREATE TABLE cars (
 	car_id SERIAL PRIMARY KEY,
-	merk VARCHAR(10) NOT NULL,
+	brand VARCHAR(10) NOT NULL,
 	model VARCHAR(25) NOT NULL,
 	body_type VARCHAR(15) NOT NULL,
 	price INT NOT NULL CHECK (price_idr > 0),
@@ -46,7 +46,7 @@ CREATE TABLE cars (
 CREATE TABLE cities (
 	city_id PRIMARY KEY,
 	city_name VARCHAR(12) NOT NULL,
-	ltitude NUMERIC(8,6) NOT NULL UNIQUE,
+	latitude NUMERIC(9,6) NOT NULL UNIQUE,
 	longitude NUMERIC(9,6) NOT NULL UNIQUE
 );
 ```
@@ -65,11 +65,8 @@ CREATE TABLE ads (
 	ad_id SERIAL PRIMARY KEY,
 	user_id INT NOT NULL REFERENCES users(user_id),
 	car_id INT NOT NULL REFERENCES cars(car_id),
-	description TEXT,
+	description TEXT NOT NULL,
 	title VARCHAR(50) NOT NULL,
-	color VARCHAR(10),
-	mileage INT,
-	transmission VARCHAR(10),
 	negotiable BOOLEAN NOT NULL,
 	post_date TIMESTAMP(0) NOT NULL	
 );
@@ -80,8 +77,7 @@ CREATE TABLE bids (
 	bid_id SERIAL PRIMARY KEY,
 	user_id INT NOT NULL REFERENCES users(user_id),
 	ad_id INT NOT NULL REFERENCES ads(ad_id),
-	bid_price INT NOT NULL CHECK (bid_price_idr > 0),
-	bid_status VARCHAR(10) NOT NULL CHECK (bid_status IN ('Sent', 'Rejected', 'Accepted')),
+	bid_price INT NOT NULL CHECK (bid_price > 0),
 	bid_date TIMESTAMP(0) NOT NULL
 );
 ```
@@ -373,21 +369,19 @@ def generate_dummy_bids(n, users, ads):
         ad_id = random.choice(negotiable_cars)["ad_id"]
         user_id = generate_bid_user_id(ad_id, users, negotiable_cars)
         bid_price = generate_price_bid(ad_id, negotiable_cars, cars_data)
-        bid_status = random.choice(["Sent", "Rejected", "Accepted"])
         bid_date = generate_bids_date(negotiable_cars, ad_id)
         bids_data.append({
             "bid_id" : bid_id,
             "user_id" : user_id,
             "ad_id" : ad_id,
             "bid_price" : bid_price,
-            "bid_status": bid_status,
             "bid_date" : bid_date,
         })
     
     return bids_data
 
 #define columns for bids table
-bid_cols = ["bid_id", "user_id", "ad_id", "bid_price", "bid_status", "bid_date"]
+bid_cols = ["bid_id", "user_id", "ad_id", "bid_price", "bid_date"]
 #generate rows for bids table
 bid_rows = generate_dummy_bids(400, user_id, ads_data)
 #save to bids.csv
@@ -487,10 +481,9 @@ def insert_bids_dummy(filename):
             user_id = row[1]
             ad_id = row[2]
             bid_price = row[3]
-            bid_status = row[4]
-            bid_date = row[5]
+            bid_date = row[4]
 
-            insert_query = f"INSERT INTO bids (user_id, ad_id, bid_price, bid_status, bid_date) VALUES ('{user_id}', '{ad_id}', '{bid_price}', '{bid_status}', '{bid_date}');"
+            insert_query = f"INSERT INTO bids (user_id, ad_id, bid_price, bid_date) VALUES ('{user_id}', '{ad_id}', '{bid_price}',  '{bid_date}');"
 
             cursor.execute(insert_query)
 
@@ -518,8 +511,8 @@ Output:
 ![cars after 2015](img/cars_after_2015.jpg)
 ### Inserting one bid data
 ```sql
-INSERT INTO bids (user_id, ad_id, bid_price, bid_date, bid_status) 
-VALUES (30, 10, 150000000, current_timestamp, 'Sent');
+INSERT INTO bids (user_id, ad_id, bid_price, bid_date) 
+VALUES (30, 10, 150000000, current_timestamp);
 ```
 Output:  
 ![inserting one bid data](img/add_one_bid.jpg)
@@ -693,7 +686,7 @@ ORDER BY avg_bid_6_months;
 ```
 Output:  
 ![avg car price and bi price last 6 months](img/avg_price_vs_avg_bid_price_6_months.jpg)
-### Average bid price from last one to six months (using window function)
+### Average bid price of one car model from last one to six months (using window function). i.e average bid price of Honda CR-V.
 ```sql
 WITH avg_bid_price_data AS (
 	SELECT 
@@ -708,7 +701,7 @@ WITH avg_bid_price_data AS (
 	USING (ad_id)
 	INNER JOIN cars c
 	USING (car_id)
-	WHERE b.bid_date >= CURRENT_DATE - INTERVAL '6 months'
+	WHERE b.bid_date >= CURRENT_DATE - INTERVAL '6 months' AND c.model = 'Honda CR-V'
 )
 
 SELECT

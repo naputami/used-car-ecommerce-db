@@ -125,21 +125,19 @@ def generate_dummy_bids(n, users, ads):
         ad_id = random.choice(negotiable_cars)["ad_id"]
         user_id = generate_bid_user_id(ad_id, users, negotiable_cars)
         bid_price = generate_price_bid(ad_id, negotiable_cars, cars_data)
-        bid_status = random.choice(["Sent", "Rejected", "Accepted"])
         bid_date = generate_bids_date(negotiable_cars, ad_id)
         bids_data.append({
             "bid_id" : bid_id,
             "user_id" : user_id,
             "ad_id" : ad_id,
             "bid_price" : bid_price,
-            "bid_status": bid_status,
             "bid_date" : bid_date,
         })
     
     return bids_data
 
 #define columns for bids table
-bid_cols = ["bid_id", "user_id", "ad_id", "bid_price", "bid_status", "bid_date"]
+bid_cols = ["bid_id", "user_id", "ad_id", "bid_price", "bid_date"]
 #generate rows for bids table
 bid_rows = generate_dummy_bids(400, user_id, ads_data)
 #save to bids.csv

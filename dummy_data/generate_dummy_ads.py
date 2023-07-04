@@ -58,9 +58,6 @@ def generate_dummy_ads(n, cars_data, users_data):
             "user_id" : user_id,
             "car_id" : car_id,
             "title" : title,
-            "color" : color,
-            "mileage_km" : mileage,
-            "transmission" : transmission,
             "negotiable" : negotiable,
             "description" : desc,
             "post_date" : post_date,
@@ -69,7 +66,7 @@ def generate_dummy_ads(n, cars_data, users_data):
     return ads_data
 
 #define columns for ads table
-ad_cols = ["ad_id", "user_id", "car_id", "title", "color", "mileage", "transmission", "negotiable", "description", "post_date"]
+ad_cols = ["ad_id", "user_id", "car_id", "title", "negotiable", "description", "post_date"]
 #generate rows for ads table
 ad_rows = generate_dummy_ads(200, cars_data, user_ids)
 #save to ads.csv

@@ -92,7 +92,7 @@ WITH avg_bid_price_data AS (
 	USING (ad_id)
 	INNER JOIN cars c
 	USING (car_id)
-	WHERE b.bid_date >= CURRENT_DATE - INTERVAL '6 months'
+	WHERE b.bid_date >= CURRENT_DATE - INTERVAL '6 months' AND c.model = 'Honda CR-V'
 )
 
 SELECT

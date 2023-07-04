@@ -60,14 +60,11 @@ def insert_ads_dummy(filename):
             user_id = row[1]
             car_id = row[2]
             title = row[3]
-            color = row[4]
-            mileage =  row[5]
-            transmisiion = row[6] 
-            negotiable = row[7]
-            description = row[8]
-            post_date = row[9]
+            negotiable = row[4]
+            description = row[5]
+            post_date = row[6]
 
-            insert_query = f"INSERT INTO ads (user_id, car_id, title, color, mileage, transmission, negotiable, description, post_date) VALUES ('{user_id}', '{car_id}', '{title}', '{color}', '{mileage}', '{transmisiion}', '{negotiable}', '{description}', '{post_date}');"
+            insert_query = f"INSERT INTO ads (user_id, car_id, title, negotiable, description, post_date) VALUES ('{user_id}', '{car_id}', '{title}', '{negotiable}', '{description}', '{post_date}');"
 
             cursor.execute(insert_query)
 
@@ -90,10 +87,9 @@ def insert_bids_dummy(filename):
             user_id = row[1]
             ad_id = row[2]
             bid_price = row[3]
-            bid_status = row[4]
-            bid_date = row[5]
+            bid_date = row[4]
 
-            insert_query = f"INSERT INTO bids (user_id, ad_id, bid_price, bid_status, bid_date) VALUES ('{user_id}', '{ad_id}', '{bid_price}', '{bid_status}', '{bid_date}');"
+            insert_query = f"INSERT INTO bids (user_id, ad_id, bid_price, bid_date) VALUES ('{user_id}', '{ad_id}', '{bid_price}', '{bid_date}');"
 
             cursor.execute(insert_query)
 
