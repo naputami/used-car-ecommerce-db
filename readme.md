@@ -167,7 +167,6 @@ from faker import Faker
 import random
 from datetime import datetime, timedelta
 from csv_helper import *
-from generate_dummy_user import user_rows
 
 fake = Faker('id_ID')
 
