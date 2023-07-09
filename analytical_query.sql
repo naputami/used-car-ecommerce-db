@@ -29,7 +29,7 @@ FROM price_and_avg_price
 WHERE rn = 1;
 
 
---first bid vs next bid by keyword. ie= Daihatsu Xenia
+--next bid vs next bid by keyword. ie= Daihatsu Xenia
 WITH bids_data AS (
 	SELECT 
 		c.model, 
