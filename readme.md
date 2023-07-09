@@ -26,7 +26,7 @@ This database consists of following tables.
 |users | storing users information such as name, phone number, and domicile  |
 |cities   | storing cities information such as city name, latitude, and longitude for specifying location  |
 |ads   |storing advertisment information including details about the car, the ad poster, and the time the ad was created  |
-|bids   |storing buyer bids information such as ad of car being bidden, bid price, bid status, and bid date    |
+|bids   |storing buyer bids information such as ad of car being bidden, bid price, and bid date    |
 |cars  |storing details about the car including, brand, model, body type, year of manufacture, and price  |
 
 ### DDL
