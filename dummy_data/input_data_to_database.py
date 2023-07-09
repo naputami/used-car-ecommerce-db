@@ -6,11 +6,11 @@ from psycopg2 import Error
 try:
     connection = psycopg2.connect(
         #change the value according to your pgAdmin settings
-        user="postgres",
-        password="GaNbarou23",
-        host="localhost",
-        port="5432",
-        database="finalproject_pacmann"
+        user="user",
+        password="password",
+        host="host",
+        port="port",
+        database="database_name"
     )
 
     cursor = connection.cursor()

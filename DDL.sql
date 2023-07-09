@@ -1,3 +1,4 @@
+--create table cities
 CREATE TABLE cities (
 	city_id PRIMARY KEY,
 	city_name VARCHAR(12) NOT NULL UNIQUE,
@@ -5,6 +6,7 @@ CREATE TABLE cities (
 	longitude NUMERIC(9,6) NOT NULL UNIQUE
 );
 
+--create table users
 CREATE TABLE users (
 	user_id SERIAL PRIMARY KEY,
 	name VARCHAR(50) NOT NULL,
@@ -13,6 +15,7 @@ CREATE TABLE users (
 	role VARCHAR(6) NOT NULL CHECK (role in ('Seller', 'Buyer'))  
 );
 
+--create table cars
 CREATE TABLE cars (
 	car_id SERIAL PRIMARY KEY,
 	brand VARCHAR(10) NOT NULL,
@@ -22,6 +25,7 @@ CREATE TABLE cars (
 	year INT NOT NULL
 );
 
+--create table ads
 CREATE TABLE ads (
 	ad_id SERIAL PRIMARY KEY,
 	user_id INT NOT NULL REFERENCES users(user_id),
@@ -35,6 +39,7 @@ CREATE TABLE ads (
 	post_date TIMESTAMP(0) NOT NULL
 );
 
+--create table bids
 CREATE TABLE bids (
 	bid_id SERIAL PRIMARY KEY,
 	user_id INT NOT NULL REFERENCES users(user_id),

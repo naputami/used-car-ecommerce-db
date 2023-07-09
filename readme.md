@@ -55,8 +55,9 @@ CREATE TABLE cities (
 CREATE TABLE users (
 	user_id SERIAL PRIMARY KEY,
 	name VARCHAR(50) NOT NULL,
-	phone_number VARCHAR(15) NOT NULL UNIQUE,
-	city_id INT NOT NULL REFERENCES cities(city_id)  
+	phone_number VARCHAR(20) NOT NULL UNIQUE,
+	city_id INT NOT NULL REFERENCES cities(city_id),
+	role VARCHAR(6) NOT NULL CHECK (role in ('Seller', 'Buyer'))  
 );
 ```
 #### Create Table Ads
@@ -65,11 +66,38 @@ CREATE TABLE ads (
 	ad_id SERIAL PRIMARY KEY,
 	user_id INT NOT NULL REFERENCES users(user_id),
 	car_id INT NOT NULL REFERENCES cars(car_id),
-	description TEXT NOT NULL,
 	title VARCHAR(50) NOT NULL,
+	description TEXT NOT NULL,
+	color VARCHAR(15) NOT NULL,
+	transmission VARCHAR(15) NOT NULL CHECK (transmission in ('Automatic', 'Manual')),
+	mileage INT NOT NULL,
 	negotiable BOOLEAN NOT NULL,
-	post_date TIMESTAMP(0) NOT NULL	
+	post_date TIMESTAMP(0) NOT NULL
 );
+```
+#### Create trigger function and trigger object for checking role of user_id in ads_table
+```sql
+--create trigger function for ensuring that user_id in ads table is "Seller"
+CREATE FUNCTION validate_seller_role()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM users
+        WHERE user_id = NEW.user_id AND role = 'Seller'
+    ) THEN
+        RETURN NEW;
+    ELSE
+        RAISE EXCEPTION 'User must have role "Seller"';
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+--create trigger object for validate_seller_role()
+CREATE TRIGGER ads_seller_role_trigger
+BEFORE INSERT OR UPDATE ON ads
+FOR EACH ROW
+EXECUTE FUNCTION validate_seller_role();
 ```
 #### Create Table Bids
 ```sql
@@ -80,6 +108,54 @@ CREATE TABLE bids (
 	bid_price INT NOT NULL CHECK (bid_price > 0),
 	bid_date TIMESTAMP(0) NOT NULL
 );
+```
+#### Create trigger function and trigger object for checking role of user_id in bids_table
+```sql
+--create trigger function for ensuring that user_id in bids table is "Buyer"
+CREATE FUNCTION validate_buyer_role()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM users
+        WHERE user_id = NEW.user_id AND role = 'Buyer'
+    ) THEN
+        RETURN NEW;
+    ELSE
+        RAISE EXCEPTION 'User must have role "Buyer"';
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+--create trigger object for validate_buyer_role()
+CREATE TRIGGER bids_buyer_role_trigger
+BEFORE INSERT OR UPDATE ON bids
+FOR EACH ROW
+EXECUTE FUNCTION validate_buyer_role();
+```
+#### Create trigger function and trigger object for checking negotiable status of ad_id in bids_table
+```sql
+--create trigger function for ensuring that ad_id in bids table has value "true" in ads.negotiable field
+CREATE FUNCTION validate_negotiable_ad()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM ads
+        WHERE ad_id = NEW.ad_id AND negotiable = true
+    ) THEN
+        RETURN NEW;
+    ELSE
+        RAISE EXCEPTION 'Car price must be negotiable';
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+--create trigger object for validate_negotiable_ad()
+CREATE TRIGGER bids_negotiable_ad_trigger
+BEFORE INSERT OR UPDATE ON bids
+FOR EACH ROW
+EXECUTE FUNCTION validate_negotiable_ad();
 ```
 ## ER Diagram
 ![used car ecommerce ERD](img/ERD-dark_mode.jpg)
@@ -145,21 +221,22 @@ def generate_dummy_user(n):
 
     for i in range(1,n+1):
         user_data.append({
-            'user_id': i,
-            'name': fake.name(),
-            'phone_number': fake.phone_number(),
-            'city_id': random.choice(city_ids)
+            "user_id": i,
+            "name": fake.name(),
+            "phone_number": fake.phone_number(),
+            "city_id": random.choice(city_ids),
+            "role" :random.choice(["Buyer", "Seller"])
         })
     
     return user_data
 
 #define column for user table
-user_cols = ['user_id', 'name', 'phone_number', 'city_id']
+user_cols = ['user_id', 'name', 'phone_number', 'city_id', 'role']
 #generate rows for user table
 user_rows = generate_dummy_user(100)
 
 #save to user.csv
-save_to_csv('user.csv', user_cols, user_rows)
+save_to_csv('csv/users.csv', user_cols, user_rows)
 ```
 ### Code for generating dummy data for ads table
 ```python
@@ -171,13 +248,13 @@ from csv_helper import *
 fake = Faker('id_ID')
 
 #open user.csv to get user id data
-with open('user.csv', mode='r') as file:
+with open('csv/users.csv', mode='r') as file:
     csv_reader = csv.DictReader(file)
 
-    user_ids = [row["user_id"] for row in csv_reader]
+    user_ids = [row["user_id"] for row in csv_reader if row["role"] == "Seller"]
 
 #open car_product.csv to get car data
-with open('car_product.csv', mode='r') as file:
+with open('csv/car_product.csv', mode='r') as file:
     csv_reader = csv.DictReader(file)
 
     cars_data = []
@@ -222,22 +299,22 @@ def generate_dummy_ads(n, cars_data, users_data):
             "user_id" : user_id,
             "car_id" : car_id,
             "title" : title,
-            "color" : color,
-            "mileage_km" : mileage,
-            "transmission" : transmission,
-            "negotiable" : negotiable,
             "description" : desc,
+            "color": color,
+            "transmission" : transmission,
+            "mileage" : mileage,
+            "negotiable" : negotiable,
             "post_date" : post_date,
         })
 
     return ads_data
 
 #define columns for ads table
-ad_cols = ["ad_id", "user_id", "car_id", "title", "color", "mileage", "transmission", "negotiable", "description", "post_date"]
+ad_cols = ["ad_id", "user_id", "car_id", "title", "description", "color", "transmission", "mileage", "negotiable",  "post_date"]
 #generate rows for ads table
 ad_rows = generate_dummy_ads(200, cars_data, user_ids)
 #save to ads.csv
-save_to_csv("ads.csv", ad_cols, ad_rows)
+save_to_csv("csv/ads.csv", ad_cols, ad_rows)
 ```
 ### Code for generating dummy data for bids table
 ```python
@@ -248,13 +325,13 @@ from csv_helper import *
 
 
 #open user.csv to get user id data
-with open('user.csv', mode='r') as file:
+with open('csv/users.csv', mode='r') as file:
     csv_reader = csv.DictReader(file)
 
-    user_id = [row["user_id"] for row in csv_reader]
+    list_user_id = [row["user_id"] for row in csv_reader if row["role"] == "Buyer"]
 
 #open ads.csv to get ads data. Only retrieve needed information for further processing
-with open('ads.csv', mode='r') as file:
+with open('csv/ads.csv', mode='r') as file:
     csv_reader = csv.DictReader(file)
 
     ads_data = []
@@ -262,7 +339,6 @@ with open('ads.csv', mode='r') as file:
         ads_data.append(
             {
                 "ad_id" : row["ad_id"],
-                "user_id" : row["user_id"],
                 "car_id" : row["car_id"],
                 "negotiable" : row["negotiable"],
                 "post_date" : row["post_date"]
@@ -270,7 +346,7 @@ with open('ads.csv', mode='r') as file:
         )
 
 #open car_product.csv to get car data. Only retrieve needed information for further processing
-with open('car_product.csv', mode='r') as file:
+with open('csv/car_product.csv', mode='r') as file:
     csv_reader = csv.DictReader(file)
 
     cars_data = []
@@ -280,25 +356,6 @@ with open('car_product.csv', mode='r') as file:
             "price" : row["price"]
         })
 
-def generate_bid_user_id(ad_id, users, ads):
-    """
-    A function for generating user id that not posting the ad
-    
-    Args
-    ad_id (str)
-    users(list) :list of user id
-    ads(list): list of ads data
-
-    Return
-    user id (string) that not posting the ad
-    """
-    ad_poster_id = ""
-    for item in ads:
-        if item["ad_id"] == ad_id:
-            ad_poster_id = item["user_id"]
-            break
-    
-    return random.choice([item for item in users if item != ad_poster_id ])
 
 def generate_price_bid(ad_id, ads, cars_data):
     """
@@ -366,7 +423,7 @@ def generate_dummy_bids(n, users, ads):
     for i in range(1, n+1):
         bid_id = i
         ad_id = random.choice(negotiable_cars)["ad_id"]
-        user_id = generate_bid_user_id(ad_id, users, negotiable_cars)
+        user_id = random.choice(users)
         bid_price = generate_price_bid(ad_id, negotiable_cars, cars_data)
         bid_date = generate_bids_date(negotiable_cars, ad_id)
         bids_data.append({
@@ -382,9 +439,9 @@ def generate_dummy_bids(n, users, ads):
 #define columns for bids table
 bid_cols = ["bid_id", "user_id", "ad_id", "bid_price", "bid_date"]
 #generate rows for bids table
-bid_rows = generate_dummy_bids(400, user_id, ads_data)
+bid_rows = generate_dummy_bids(400, list_user_id, ads_data)
 #save to bids.csv
-save_to_csv("bids.csv", bid_cols, bid_rows)
+save_to_csv("csv/bids.csv", bid_cols, bid_rows)
 ```
 ### Code for import csv data to PostgreSQL Database
 ```python
@@ -400,7 +457,7 @@ try:
         password="password",
         host="host",
         port="port",
-        database="database"
+        database="database_name"
     )
 
     cursor = connection.cursor()
@@ -426,8 +483,9 @@ def insert_user_dummy(filename):
             name = row[1]
             phone = row[2]
             city_id = row[3]
+            role = row[4]
 
-            insert_query = f"INSERT INTO users (name, phone_number, city_id) VALUES ('{name}', '{phone}', '{city_id}');"
+            insert_query = f"INSERT INTO users (name, phone_number, city_id, role) VALUES ('{name}', '{phone}', '{city_id}', '{role}');"
 
             cursor.execute(insert_query)
 
@@ -450,14 +508,14 @@ def insert_ads_dummy(filename):
             user_id = row[1]
             car_id = row[2]
             title = row[3]
-            color = row[4]
-            mileage =  row[5]
-            transmisiion = row[6] 
-            negotiable = row[7]
-            description = row[8]
+            description = row[4]
+            color = row[5]
+            transmission = row[6]
+            mileage = row[7]
+            negotiable = row[8]
             post_date = row[9]
 
-            insert_query = f"INSERT INTO ads (user_id, car_id, title, color, mileage, transmission, negotiable, description, post_date) VALUES ('{user_id}', '{car_id}', '{title}', '{color}', '{mileage}', '{transmisiion}', '{negotiable}', '{description}', '{post_date}');"
+            insert_query = f"INSERT INTO ads (user_id, car_id, title, negotiable, description, post_date, color, transmission, mileage) VALUES ('{user_id}', '{car_id}', '{title}', '{negotiable}', '{description}', '{post_date}', '{color}', '{transmission}', {mileage});"
 
             cursor.execute(insert_query)
 
@@ -482,15 +540,15 @@ def insert_bids_dummy(filename):
             bid_price = row[3]
             bid_date = row[4]
 
-            insert_query = f"INSERT INTO bids (user_id, ad_id, bid_price, bid_date) VALUES ('{user_id}', '{ad_id}', '{bid_price}',  '{bid_date}');"
+            insert_query = f"INSERT INTO bids (user_id, ad_id, bid_price, bid_date) VALUES ('{user_id}', '{ad_id}', '{bid_price}', '{bid_date}');"
 
             cursor.execute(insert_query)
 
     connection.commit()
 
-insert_user_dummy("user.csv")
-insert_ads_dummy("ads.csv")
-insert_bids_dummy("bids.csv")
+insert_user_dummy("csv/users.csv")
+insert_ads_dummy("csv/ads.csv")
+insert_bids_dummy("csv/bids.csv")
 ```
 ## Transactional Query
 Following are example of transactional queries you can do on this database.
@@ -511,11 +569,11 @@ Output:
 ### Inserting one bid data
 ```sql
 INSERT INTO bids (user_id, ad_id, bid_price, bid_date) 
-VALUES (30, 10, 150000000, current_timestamp);
+VALUES (19, 86, 90000000, current_timestamp);
 ```
 Output:  
 ![inserting one bid data](img/add_one_bid.jpg)
-###  Viewing all cars from one user with name Ajimin Prasetya and ordering the result from most recent posted car
+###  Viewing all cars from one user with name Ibrani Usada and ordering the result from most recent posted car
 ```sql
 SELECT 
 	c.car_id, 
@@ -529,7 +587,7 @@ INNER JOIN ads a
 USING(car_id)
 INNER JOIN users u
 USING(user_id)
-WHERE u.name = 'Ajimin Prasetya'
+WHERE u.name = 'Ibrani Usada'
 ORDER BY a.post_date DESC;
 ```
 Output:  

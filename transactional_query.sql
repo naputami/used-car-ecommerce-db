@@ -11,9 +11,9 @@ ORDER BY year;
 
 --insert one bid entry
 INSERT INTO bids (user_id, ad_id, bid_price, bid_date) 
-VALUES (30, 10, 150000000, current_timestamp);
+VALUES (19, 86, 90000000, current_timestamp);
 
---view all cars from one user with name Ajimin Prasetya and order the result from most recent posted car                                                                                                                
+--view all cars from one user with name Ibrani Usada and order the result from most recent posted car                                                                                                                
 SELECT 
 	c.car_id, 
 	c.brand, 
@@ -26,7 +26,7 @@ INNER JOIN ads a
 USING(car_id)
 INNER JOIN users u
 USING(user_id)
-WHERE u.name = 'Ajimin Prasetya'
+WHERE u.name = 'Ibrani Usada'
 ORDER BY a.post_date DESC;
 
 --search for cheapest car by keyword. i.e "Yaris"
