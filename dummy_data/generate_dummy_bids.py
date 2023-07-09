@@ -5,13 +5,13 @@ from csv_helper import *
 
 
 #open user.csv to get user id data
-with open('user.csv', mode='r') as file:
+with open('csv/users.csv', mode='r') as file:
     csv_reader = csv.DictReader(file)
 
-    user_id = [row["user_id"] for row in csv_reader]
+    list_user_id = [row["user_id"] for row in csv_reader if row["role"] == "Buyer"]
 
 #open ads.csv to get ads data. Only retrieve needed information for further processing
-with open('ads.csv', mode='r') as file:
+with open('csv/ads.csv', mode='r') as file:
     csv_reader = csv.DictReader(file)
 
     ads_data = []
@@ -19,7 +19,6 @@ with open('ads.csv', mode='r') as file:
         ads_data.append(
             {
                 "ad_id" : row["ad_id"],
-                "user_id" : row["user_id"],
                 "car_id" : row["car_id"],
                 "negotiable" : row["negotiable"],
                 "post_date" : row["post_date"]
@@ -27,7 +26,7 @@ with open('ads.csv', mode='r') as file:
         )
 
 #open car_product.csv to get car data. Only retrieve needed information for further processing
-with open('car_product.csv', mode='r') as file:
+with open('csv/car_product.csv', mode='r') as file:
     csv_reader = csv.DictReader(file)
 
     cars_data = []
@@ -37,25 +36,6 @@ with open('car_product.csv', mode='r') as file:
             "price" : row["price"]
         })
 
-def generate_bid_user_id(ad_id, users, ads):
-    """
-    A function for generating user id that not posting the ad
-    
-    Args
-    ad_id (str)
-    users(list) :list of user id
-    ads(list): list of ads data
-
-    Return
-    user id (string) that not posting the ad
-    """
-    ad_poster_id = ""
-    for item in ads:
-        if item["ad_id"] == ad_id:
-            ad_poster_id = item["user_id"]
-            break
-    
-    return random.choice([item for item in users if item != ad_poster_id ])
 
 def generate_price_bid(ad_id, ads, cars_data):
     """
@@ -123,7 +103,7 @@ def generate_dummy_bids(n, users, ads):
     for i in range(1, n+1):
         bid_id = i
         ad_id = random.choice(negotiable_cars)["ad_id"]
-        user_id = generate_bid_user_id(ad_id, users, negotiable_cars)
+        user_id = random.choice(users)
         bid_price = generate_price_bid(ad_id, negotiable_cars, cars_data)
         bid_date = generate_bids_date(negotiable_cars, ad_id)
         bids_data.append({
@@ -139,8 +119,8 @@ def generate_dummy_bids(n, users, ads):
 #define columns for bids table
 bid_cols = ["bid_id", "user_id", "ad_id", "bid_price", "bid_date"]
 #generate rows for bids table
-bid_rows = generate_dummy_bids(400, user_id, ads_data)
+bid_rows = generate_dummy_bids(400, list_user_id, ads_data)
 #save to bids.csv
-save_to_csv("bids.csv", bid_cols, bid_rows)
+save_to_csv("csv/bids.csv", bid_cols, bid_rows)
 
 

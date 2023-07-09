@@ -1,0 +1,101 @@
+user_id,name,phone_number,city_id,role
+1,Galang Megantara,+62-121-507-2083,3175,Buyer
+2,"KH. Cemani Laksita, S.H.",+62 (67) 027-8466,7371,Seller
+3,Daliono Prabowo,0870334988,7371,Seller
+4,Laras Hidayat,(060) 597-0330,6471,Buyer
+5,drg. Raisa Prayoga,088 729 5719,5171,Seller
+6,"R. Kunthara Andriani, S.IP",(0585) 673-3815,3471,Seller
+7,Usyi Pranowo,+62 (0350) 664-6959,1375,Buyer
+8,Ibrani Usada,0869494815,3573,Seller
+9,Putri Rajasa,(0085) 080-9773,1375,Buyer
+10,Suci Lazuardi,+62 (0636) 861 1694,3172,Buyer
+11,"Puti Titin Laksita, M.Farm",+62-086-372-9908,3171,Seller
+12,T. Bancar Mulyani,(0160) 652-5840,6471,Buyer
+13,Puti Lili Farida,+62 (0882) 789 9716,6471,Buyer
+14,"Dr. Dariati Tarihoran, S.E.",(000) 204 2036,3573,Buyer
+15,Cawuk Astuti,+62 (0319) 897-1938,3175,Buyer
+16,"Ibrahim Megantara, S.Pt",0884179607,1375,Buyer
+17,Jayadi Hutagalung,089 225 6814,3175,Buyer
+18,KH. Sakti Namaga,+62-46-540-4939,5171,Buyer
+19,Elma Widiastuti,+62 (832) 427 2447,3171,Buyer
+20,"Kasiran Dabukke, S.Farm",0826956377,3273,Buyer
+21,"Drs. Betania Suryatmi, S.Gz",(0647) 502-2080,3471,Buyer
+22,"drg. Restu Hardiansyah, S.Kom",+62 (076) 446-4470,3171,Seller
+23,Vega Saputra,+62 (069) 005-5744,6471,Seller
+24,"Kambali Mandasari, M.Ak",+62 (74) 190-4896,6471,Seller
+25,Bajragin Haryanto,+62 (967) 547-6307,6471,Buyer
+26,dr. Maya Putra,+62 (0878) 675 7533,3273,Buyer
+27,Drs. Kamila Hidayanto,(0915) 675-4550,6472,Seller
+28,Jagaraga Nuraini,+62 (404) 586 0780,3174,Buyer
+29,Vicky Maryati,+62-343-155-2715,6471,Seller
+30,Yuliana Rajata,(0863) 903-3229,3174,Seller
+31,Ir. Sadina Gunarto,+62-174-027-2081,3573,Seller
+32,Kemal Uwais,+62-0150-185-5686,3471,Buyer
+33,Ulva Pradipta,(066) 193 2906,3171,Seller
+34,Raharja Sihombing,(0007) 968-2952,7371,Seller
+35,Fathonah Maryadi,+62-076-014-1014,6472,Buyer
+36,"Cemeti Laksita, M.Pd",+62 (361) 929 8994,5171,Seller
+37,Banara Siregar,+62 (93) 665-6021,3172,Buyer
+38,Tira Marpaung,+62-007-851-2012,7371,Seller
+39,Muhammad Siregar,+62-759-415-9371,6472,Seller
+40,Kamila Usamah,+62-92-618-9737,1371,Seller
+41,Zalindra Samosir,+62 (713) 547-4377,3273,Seller
+42,"Zulfa Namaga, S.Psi",+62 (07) 975 2349,3172,Buyer
+43,Asmadi Zulkarnain,+62-0347-868-3113,1375,Buyer
+44,Aisyah Puspita,+62 (008) 079 3562,7371,Buyer
+45,Rina Rajasa,+62 (609) 899-9157,3171,Seller
+46,"dr. Widya Thamrin, S.Farm",+62-077-499-3673,1375,Seller
+47,Uchita Farida,+62 (626) 296-8662,7371,Buyer
+48,"Yessi Natsir, S.Ked",0817607450,1371,Seller
+49,Hani Pratama,+62 (027) 750-9331,3173,Seller
+50,Najib Uwais,+62 (0160) 357 8938,3578,Buyer
+51,"Tina Laksmiwati, S.Kom",+62 (0482) 989 6792,6471,Seller
+52,"Hj. Hesti Budiyanto, S.E.",(075) 816-3341,3171,Seller
+53,Dinda Halim,+62 (0332) 080-6219,6471,Buyer
+54,"Rahmi Siregar, S.Farm",+62 (65) 911-5831,6471,Seller
+55,Kasiyah Lestari,+62 (032) 581 9791,3578,Seller
+56,Cager Widiastuti,+62-34-034-3440,3173,Buyer
+57,"Hardana Prayoga, M.M.",+62 (656) 119 1584,1375,Buyer
+58,Erik Andriani,(032) 241-2211,3471,Buyer
+59,"Drs. Fitria Tamba, S.Gz",(0589) 534-6131,1375,Buyer
+60,"Violet Prakasa, S.E.I",+62 (35) 376-1013,5171,Buyer
+61,Rachel Yuliarti,087 116 2206,3471,Buyer
+62,"Puti Gilda Salahudin, M.M.",+62 (025) 646 3943,3172,Seller
+63,"Maryadi Narpati, M.Farm",+62 (043) 107 8023,3175,Seller
+64,Mila Lailasari,(0797) 658 8549,3471,Buyer
+65,Silvia Sihombing,+62 (318) 491-5593,3471,Seller
+66,Prayoga Widiastuti,+62 (265) 831 1714,3175,Seller
+67,Eluh Susanti,+62 (0758) 845 2875,3172,Seller
+68,Lidya Irawan,+62 (985) 904 6506,3273,Seller
+69,Dr. Puspa Mardhiyah,+62 (76) 903 7762,5171,Seller
+70,Muni Prasasta,+62 (0501) 354 1835,3578,Seller
+71,"Dasa Safitri, S.Kom",+62 (008) 115 9786,1375,Buyer
+72,Daryani Saefullah,(082) 874-8099,3573,Seller
+73,R. Michelle Prastuti,+62 (0127) 117 4522,5171,Seller
+74,Gina Wulandari,+62-046-460-5007,3172,Buyer
+75,"Farhunnisa Halimah, S.Gz",+62 (030) 743-5708,3573,Seller
+76,Nurul Yolanda,+62 (0556) 159 3825,6471,Seller
+77,Zalindra Zulaika,+62 (060) 298 1098,3273,Buyer
+78,Juli Nasyiah,(014) 384-7166,5171,Seller
+79,Uchita Prabowo,+62 (092) 365-2947,7371,Buyer
+80,Karimah Simbolon,084 443 2013,3172,Seller
+81,Puspa Salahudin,+62 (0102) 506 7621,3573,Seller
+82,Drs. Irfan Mangunsong,+62 (0619) 224 1129,3174,Seller
+83,Dt. Kasim Thamrin,+62-0225-060-7626,3173,Buyer
+84,Jais Suryatmi,(047) 773-0116,3471,Buyer
+85,Kani Hutagalung,+62 (0515) 102 3409,3573,Seller
+86,"Usyi Ardianto, S.I.Kom",+62-040-995-2596,3175,Buyer
+87,Joko Hassanah,(0688) 161 8430,3573,Buyer
+88,Tgk. Banara Prasetya,+62 (073) 844 5164,1371,Buyer
+89,Icha Saptono,+62-240-493-4560,7371,Seller
+90,R.M. Dariati Wijayanti,+62-63-830-2111,3273,Buyer
+91,Vega Suartini,+62-024-251-0947,7371,Seller
+92,Puti Dina Saptono,+62 (031) 755-4537,3173,Buyer
+93,Bagus Najmudin,+62 (72) 812-8630,3171,Seller
+94,"R.M. Vero Nashiruddin, S.Kom",+62 (635) 624 1198,3174,Buyer
+95,"R.M. Ajimat Pradana, S.IP",+62 (256) 135 9969,3578,Seller
+96,drg. Almira Saragih,(0176) 955 1469,3471,Buyer
+97,"drg. Dina Tamba, S.T.",+62-083-440-8206,3171,Seller
+98,Juli Usada,+62 (402) 164 4249,6472,Buyer
+99,Kajen Aryani,+62 (348) 194-0982,3171,Seller
+100,"Hj. Winda Salahudin, M.M.",+62 (087) 968-4398,6471,Buyer

@@ -6,13 +6,13 @@ from csv_helper import *
 fake = Faker('id_ID')
 
 #open user.csv to get user id data
-with open('user.csv', mode='r') as file:
+with open('csv/users.csv', mode='r') as file:
     csv_reader = csv.DictReader(file)
 
-    user_ids = [row["user_id"] for row in csv_reader]
+    user_ids = [row["user_id"] for row in csv_reader if row["role"] == "Seller"]
 
 #open car_product.csv to get car data
-with open('car_product.csv', mode='r') as file:
+with open('csv/car_product.csv', mode='r') as file:
     csv_reader = csv.DictReader(file)
 
     cars_data = []
@@ -57,16 +57,19 @@ def generate_dummy_ads(n, cars_data, users_data):
             "user_id" : user_id,
             "car_id" : car_id,
             "title" : title,
-            "negotiable" : negotiable,
             "description" : desc,
+            "color": color,
+            "transmission" : transmission,
+            "mileage" : mileage,
+            "negotiable" : negotiable,
             "post_date" : post_date,
         })
 
     return ads_data
 
 #define columns for ads table
-ad_cols = ["ad_id", "user_id", "car_id", "title", "negotiable", "description", "post_date"]
+ad_cols = ["ad_id", "user_id", "car_id", "title", "description", "color", "transmission", "mileage", "negotiable",  "post_date"]
 #generate rows for ads table
 ad_rows = generate_dummy_ads(200, cars_data, user_ids)
 #save to ads.csv
-save_to_csv("ads.csv", ad_cols, ad_rows)
+save_to_csv("csv/ads.csv", ad_cols, ad_rows)

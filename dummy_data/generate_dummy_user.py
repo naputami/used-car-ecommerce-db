@@ -36,18 +36,19 @@ def generate_dummy_user(n):
 
     for i in range(1,n+1):
         user_data.append({
-            'user_id': i,
-            'name': fake.name(),
-            'phone_number': fake.phone_number(),
-            'city_id': random.choice(city_ids)
+            "user_id": i,
+            "name": fake.name(),
+            "phone_number": fake.phone_number(),
+            "city_id": random.choice(city_ids),
+            "role" :random.choice(["Buyer", "Seller"])
         })
     
     return user_data
 
 #define column for user table
-user_cols = ['user_id', 'name', 'phone_number', 'city_id']
+user_cols = ['user_id', 'name', 'phone_number', 'city_id', 'role']
 #generate rows for user table
 user_rows = generate_dummy_user(100)
 
 #save to user.csv
-save_to_csv('user.csv', user_cols, user_rows)
+save_to_csv('csv/users.csv', user_cols, user_rows)

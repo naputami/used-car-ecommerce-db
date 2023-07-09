@@ -6,11 +6,11 @@ from psycopg2 import Error
 try:
     connection = psycopg2.connect(
         #change the value according to your pgAdmin settings
-        user="user",
-        password="password",
-        host="host",
-        port="port",
-        database="database"
+        user="postgres",
+        password="GaNbarou23",
+        host="localhost",
+        port="5432",
+        database="finalproject_pacmann"
     )
 
     cursor = connection.cursor()
@@ -36,8 +36,9 @@ def insert_user_dummy(filename):
             name = row[1]
             phone = row[2]
             city_id = row[3]
+            role = row[4]
 
-            insert_query = f"INSERT INTO users (name, phone_number, city_id) VALUES ('{name}', '{phone}', '{city_id}');"
+            insert_query = f"INSERT INTO users (name, phone_number, city_id, role) VALUES ('{name}', '{phone}', '{city_id}', '{role}');"
 
             cursor.execute(insert_query)
 
@@ -60,11 +61,14 @@ def insert_ads_dummy(filename):
             user_id = row[1]
             car_id = row[2]
             title = row[3]
-            negotiable = row[4]
-            description = row[5]
-            post_date = row[6]
+            description = row[4]
+            color = row[5]
+            transmission = row[6]
+            mileage = row[7]
+            negotiable = row[8]
+            post_date = row[9]
 
-            insert_query = f"INSERT INTO ads (user_id, car_id, title, negotiable, description, post_date) VALUES ('{user_id}', '{car_id}', '{title}', '{negotiable}', '{description}', '{post_date}');"
+            insert_query = f"INSERT INTO ads (user_id, car_id, title, negotiable, description, post_date, color, transmission, mileage) VALUES ('{user_id}', '{car_id}', '{title}', '{negotiable}', '{description}', '{post_date}', '{color}', '{transmission}', {mileage});"
 
             cursor.execute(insert_query)
 
@@ -95,6 +99,6 @@ def insert_bids_dummy(filename):
 
     connection.commit()
 
-insert_user_dummy("user.csv")
-insert_ads_dummy("ads.csv")
-insert_bids_dummy("bids.csv")
+insert_user_dummy("csv/users.csv")
+insert_ads_dummy("csv/ads.csv")
+insert_bids_dummy("csv/bids.csv")
